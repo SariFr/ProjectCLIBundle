@@ -1,6 +1,6 @@
 ﻿
-using System;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.ComponentModel;
 
 string fullPath = "";
@@ -9,12 +9,12 @@ var bundleCommand = new Command("bundle", "Bundle code files to a single file");
 var rspCommand = new Command("create-rsp", "create rsp file");
 
 // option
-var bundleOption = new Option<FileInfo>("--output", "File path and name");
-var sourceOption = new Option<bool>("--s", "Add source path to output file");
-var authorOption = new Option<string>("--author", "Add author to output file");
-var languageOption = new Option<string[]>("--language", "Add list of language");
+var bundleOption = new Option<FileInfo>(new[] { "--output", "-o" }, "File path and name");
+var sourceOption = new Option<bool>(new[] { "--source", "-s" }, "Add source path to output file");
+var authorOption = new Option<string>(new[] { "--author", "-a" }, "Add author to output file");
+var languageOption = new Option<string[]>(new[] { "--language", "-l" }, "Add list of language");
 var sortOption = new Option<bool>("--sort", "sort files by files type");
-var removeOption = new Option<bool>("--remove", "remove empty lines");
+var removeOption = new Option<bool>(new[] { "--remove", "-r" }, "remove empty lines");
 languageOption.AllowMultipleArgumentsPerToken = true;
 languageOption.IsRequired = true;
 
@@ -44,7 +44,7 @@ rspCommand.SetHandler(() =>
     string outputFile = Console.ReadLine() ?? "bundle.txt";
 
     Console.WriteLine("Include source path in the bundle? (y/n):");
-    string includeSource = Console.ReadLine()?.ToLower() == "y" ? "--s" : "";
+    string includeSource = Console.ReadLine()?.ToLower() == "y" ? "-s" : "";
 
     Console.WriteLine("Sort files by type? (y/n):");
     string sortOption = Console.ReadLine() == "y" ? "--sort" : "";
